@@ -89,18 +89,34 @@ TODO: exemplos de uso.
 
 ## Instalar e configurar uma versão recente do sra-toolkit:
 - Alguns passos foram extraídos do link: https://reneshbedre.github.io/blog/fqutil.html
+
 1) Baixar o pacote:
+
 $ wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.10.8/sratoolkit.2.10.8-ubuntu64.tar.gz
+
 2) Extrair:
+
 $ tar -zxvf sratoolkit.2.10.8-ubuntu64.tar.gz
+
 3) Exportar o path de onde foram copiados os arquivos (p. ex., pwd):
+
 $ export PATH=$PATH:/<path_onde_copiou_os_arquivos>/sratoolkit.2.10.8-ubuntu64/bin
+
 5) Configurar o conjunto de ferramentas através do comando:
+
 $ vdb-config --interactive
-Obs.: Neste passo é preciso habilitar o acesso remoto, criar uma pasta para a cache, aumentar a RAM configurada para a cache, criar uma pasta para o process-local e marcar o prefetch para o diretório atual
+
+Obs.: Neste passo é preciso habilitar o acesso remoto, criar uma pasta para a cache, aumentar a RAM configurada para a cache, criar uma pasta para o process-local 
+e marcar o prefetch para o diretório atual
+
 6) Testar se as ferramentas estão linkadas corretamente:
+
 $ fastq-dump -h
+
 $ vdb-dump -h
+
 7) Testar se as ferramentas estão a conseguir acessar os serviços:
+
 $ fastq-dump -N 5 -X 5 -Z SRR618664
+
 $ vdb-dump --id_range SRR955798
