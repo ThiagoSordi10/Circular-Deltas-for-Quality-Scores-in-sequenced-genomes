@@ -1,4 +1,6 @@
-###To compile
+### To compile
+
+### BUGGED
 
 Type: ./main "input name file" "output name file"
 
