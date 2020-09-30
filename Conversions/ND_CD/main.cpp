@@ -14,12 +14,12 @@
 	represented by [-20, -1].
 **/
 
-int main(){
+int main(int argc, char *argv[]){
 	//This is the file with fastq data
-	std::ifstream file("SRR618664_1_100.fastq");
+	std::ifstream file(argv[1]);
 	//This is the file that should contains the circular delta values
 	//OBS: we only change the line that have fastq data, the other lines are the same
-	std::ofstream circular("circular.txt");
+	std::ofstream circular(argv[2]);
 	//We open the fastq file
 	if(file.is_open()){
 		std::string line;
