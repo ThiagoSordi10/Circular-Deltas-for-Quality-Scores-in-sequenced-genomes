@@ -61,12 +61,134 @@ int main(int argc, char *argv[]){
 					}
 					//transform the char readed in the text file to a int value.
 					int valor = atoi(v[i].c_str());
-					
-					if(valor_anterior -33 + valor > 40){
-						int vaux = valor *-1;
-						valor = vaux;
-						valor = valor - 20;
-						cout << valor << "|";
+					//segunda parte do if é teste
+					if(valor_anterior -33 + valor > 41 || valor_anterior -33 + valor < 0){
+						switch(valor){
+							case -20:
+								valor = 21;
+								break;
+							case -19:
+								valor = 22;
+								break;
+							case -18:
+								valor = 23;
+								break;
+							case -17:
+								valor = 24;
+								break;
+							case -16:
+								valor = 25;
+								break;
+							case -15:
+								valor = 26;
+								break;
+							case -14:
+								valor = 27;
+								break;
+							case -13:
+								valor = 28;
+								break;
+							case -12:
+								valor = 29;
+								break;
+							case -11:
+								valor = 30;
+								break;
+							case -10:
+								valor = 31;
+								break;
+							case -9:
+								valor = 32;
+								break;
+							case -8:
+								valor = 33;
+								break;
+							case -7:
+								valor = 34;
+								break;
+							case -6:
+								valor = 35;
+								break;
+							case -5:
+								valor = 36;
+								break;
+							case -4:
+								valor = 37;
+								break;
+							case -3:
+								valor = 38;
+								break;
+							case -2:
+								valor = 39;
+								break;
+							case -1:
+								valor = 40;
+								break;
+							case 1:
+								valor = -40;
+								break;
+							case 2:
+								valor = -39;
+								break;
+							case 3:
+								valor =-38;
+								break;
+							case 4:
+								valor = -37;
+								break;
+							case 5:
+								valor = -36;
+								break;
+							case 6:
+								valor = -35;
+								break;
+							case 7:
+								valor = -34;
+								break;
+							case 8:
+								valor = -33;
+								break;
+							case 9:
+								valor = -32;
+								break;
+							case 10:
+								valor = -31;
+								break;
+							case 11:
+								valor = -30;
+								break;
+							case 12:
+								valor = -29;
+								break;
+							case 13:
+								valor = -28;
+								break;
+							case 14:
+								valor = -27;
+								break;
+							case 15:
+								valor = -26;
+								break;
+							case 16:
+								valor = -25;
+								break;
+							case 17:
+								valor = -24;
+								break;
+							case 18:
+								valor = -23;
+								break;
+							case 19:
+								valor = -22;
+								break;
+							case 20:
+								valor = -21;
+								break;
+						}
+						//int vaux = valor *-1;
+						//valor = vaux;
+						//valor = valor - 20;
+						//cout << valor << "|";
 					}
 					//Gets the sum of the value read and the last value
 					int variavel = valor_anterior + valor;
