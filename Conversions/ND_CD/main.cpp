@@ -14,12 +14,12 @@
 	represented by [-20, -1].
 **/
 
-int main(int argc, char *argv[]){
+int main(){
 	//This is the file with fastq data
-	std::ifstream file(argv[1]);
+	std::ifstream file("SRR618664_1_100.fastq");
 	//This is the file that should contains the circular delta values
 	//OBS: we only change the line that have fastq data, the other lines are the same
-	std::ofstream circular(argv[2]);
+	std::ofstream circular("circular.txt");
 	//We open the fastq file
 	if(file.is_open()){
 		std::string line;
@@ -36,18 +36,141 @@ int main(int argc, char *argv[]){
 				circular << ' ';
 
 				for(auto i = 1; i <vetor_qs.size(); i++){
-					//Get the difference betwen the actual QS value and the last one
+					//Get the difference betwen the actual QS value and the last one.
 					int aux = (vetor_qs[i] - vetor_qs[i-1]);
 					//Aux is the ND value, now we transform it to CD value
 					if(aux >= 21 || aux <= -21){
-						circular << (aux % 20) * -1;
-						circular << ' ';
+						switch(aux){
+							case 21:
+								circular << -20;
+								break;
+							case 22:
+								circular << -19;
+								break;
+							case 23:
+								circular << -18;
+								break;
+							case 24:
+								circular << -17;
+								break;
+							case 25:
+								circular << -16;
+								break;
+							case 26:
+								circular << -15;
+								break;
+							case 27:
+								circular << -14;
+								break;
+							case 28:
+								circular << -13;
+								break;
+							case 29:
+								circular << -12;
+								break;
+							case 30:
+								circular << -11;
+								break;
+							case 31:
+								circular << -10;
+								break;
+							case 32:
+								circular << -9;
+								break;
+							case 33:
+								circular << -8;
+								break;
+							case 34:
+								circular << -7;
+								break;
+							case 35:
+								circular << -6;
+								break;
+							case 36:
+								circular << -5;
+								break;
+							case 37:
+								circular << -4;
+								break;
+							case 38:
+								circular << -3;
+								break;
+							case 39:
+								circular << -2;
+								break;
+							case 40:
+								circular << -1;
+								break;
+							case -40:
+								circular << 1;
+								break;
+							case -39:
+								circular << 2;
+								break;
+							case -38:
+								circular << 3;
+								break;
+							case -37:
+								circular << 4;
+								break;
+							case -36:
+								circular << 5;
+								break;
+							case -35:
+								circular << 6;
+								break;
+							case -34:
+								circular << 7;
+								break;
+							case -33:
+								circular << 8;
+								break;
+							case -32:
+								circular << 9;
+								break;
+							case -31:
+								circular << 10;
+								break;
+							case -30:
+								circular << 11;
+								break;
+							case -29:
+								circular << 12;
+								break;
+							case -28:
+								circular << 13;
+								break;
+							case -27:
+								circular << 14;
+								break;
+							case -26:
+								circular << 15;
+								break;
+							case -25:
+								circular << 16;
+								break;
+							case -24:
+								circular << 17;
+								break;
+							case -23:
+								circular << 18;
+								break;
+							case -22:
+								circular << 19;
+								break;
+							case -21:
+								circular << 20;
+								break;
+						}
+						//circular << (aux % 20) * -1;
+						//circular << ' ';
 					}
 					else{
 						//Write to the new file values between [-20,20]
 						circular << aux;
-						circular << ' ';
+						//circular << ' ';
 					}
+					circular << ' ';
 				}
 				//write the break line and reset the counter line
 				circular << "\n";
