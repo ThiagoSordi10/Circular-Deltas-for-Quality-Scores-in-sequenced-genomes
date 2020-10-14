@@ -32,3 +32,11 @@ do
 		fastq-dump.2.10.8 -N $ENTRY -X $ENTRY --skip-technical -Z $ACCESSION >> $OUTPUT 2>/dev/null
 	done
 done
+
+while read comment1; read dna; read comment2; read qs
+do
+  echo "$comment1"
+  echo "$dna"
+  echo "$comment2"
+  echo "$qs"
+done < "$OUTPUT"
