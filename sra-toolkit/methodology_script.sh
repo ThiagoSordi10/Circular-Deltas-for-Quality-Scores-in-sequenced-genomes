@@ -9,7 +9,10 @@ NUM_READS_PER_GENOME=$2
 # and the output file
 OUTPUT=$3
 
-if [ "$#" -ne "3" ]; then
+# and a file specifically for failed accessions
+FAILED_ACCESSIONS=$4
+
+if [ "$#" -ne "4" ]; then
     echo "Error. Not enough arguments."
     exit 1
 fi
@@ -41,9 +44,14 @@ done
 
 while read comment1; read dna; read comment2; read qs
 do
-  # IF ERROR
-  sed -i "/$comment1/d" $OUTPUT
-  sed -i "/$dna/d" $OUTPUT
-  sed -i "/$comment2/d" $OUTPUT
-  sed -i "/$qs/d" $OUTPUT
+	if [ `echo -n $dna | wc -c` -ne `echo "$comment1" | awk '{print $3}' | tr -d "length="` ] || 
+	[ `echo -n $qs | wc -c` -ne `echo "$comment2" | awk '{print $3}' | tr -d "length="` ]; then
+
+		echo "$comment1" | awk '{print $1}' | tr -d "@" | cut -f1 -d "." >> $FAILED_ACCESSIONS 2>/dev/null
+
+		sed -i "/$comment1/d" $OUTPUT
+		sed -i "/$dna/d" $OUTPUT
+		sed -i "/$comment2/d" $OUTPUT
+		sed -i "/$qs/d" $OUTPUT
+	fi
 done < "$OUTPUT"
