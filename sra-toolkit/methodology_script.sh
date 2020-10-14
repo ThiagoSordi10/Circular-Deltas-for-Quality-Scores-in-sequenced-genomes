@@ -9,6 +9,12 @@ NUM_READS_PER_GENOME=$2
 # and the output file
 OUTPUT=$3
 
+if [ "$#" -ne "3" ]; then
+    echo "Error. Not enough arguments."
+    exit 1
+fi
+echo "OK."
+
 rm ./$OUTPUT
 
 # for each accession id in the list
