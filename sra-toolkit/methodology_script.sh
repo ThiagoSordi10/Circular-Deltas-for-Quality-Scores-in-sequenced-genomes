@@ -45,13 +45,17 @@ do
 	((NUM_ACCESSION=NUM_ACCESSION+1))
 done
 
+# reads the output file, accession by accession
 while read comment1; read dna; read comment2; read qs
 do
+	# if the length displayed in the comments is not the same in the dna or the quality score, the line is deleted
 	if [ `echo -n $dna | wc -c` -ne `echo "$comment1" | awk '{print $3}' | tr -d "length="` ] || 
 	[ `echo -n $qs | wc -c` -ne `echo "$comment2" | awk '{print $3}' | tr -d "length="` ]; then
 
+		# gets the accession id, the hardcoded way.
 		echo "$comment1" | awk '{print $1}' | tr -d "@" | cut -f1 -d "." >> $FAILED_ACCESSIONS 2>/dev/null
 
+		# deletes all the lines from this accession
 		sed -i "/$comment1/d" $OUTPUT
 		sed -i "/$dna/d" $OUTPUT
 		sed -i "/$comment2/d" $OUTPUT
