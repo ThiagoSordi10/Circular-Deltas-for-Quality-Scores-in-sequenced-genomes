@@ -41,8 +41,9 @@ done
 
 while read comment1; read dna; read comment2; read qs
 do
-  echo "$comment1"
-  echo "$dna"
-  echo "$comment2"
-  echo "$qs"
+  # IF ERROR
+  sed -i "/$comment1/d" $OUTPUT
+  sed -i "/$dna/d" $OUTPUT
+  sed -i "/$comment2/d" $OUTPUT
+  sed -i "/$qs/d" $OUTPUT
 done < "$OUTPUT"
