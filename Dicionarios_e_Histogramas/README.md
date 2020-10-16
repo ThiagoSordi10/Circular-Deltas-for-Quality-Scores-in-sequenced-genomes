@@ -1,6 +1,7 @@
 ## Arquivos contendo os Histogramas e dicionários para os QS dos arquivos Fastq
 
 Para executar ambos os arquivos .py, basta compilar com:
+
 *python3 Dicionario_generico.py 'NOME DO ARQUIVO FASTQ'*
 
 ou 
