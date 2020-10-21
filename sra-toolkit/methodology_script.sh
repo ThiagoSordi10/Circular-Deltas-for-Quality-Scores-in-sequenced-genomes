@@ -46,7 +46,7 @@ do
 		echo "The accession $ACCESSION could not be fetched."
 		echo
 
-		echo "$ACCESSION" >> $FAILED_ACCESSIONS 2>/dev/null
+		echo "$ACCESSION" >> $FAILED_ACCESSIONS
 	else
 		# calculate a hash (int) based on the id to use as a seed of a random number generator
 		HASH=`cksum <<< $ACCESSION | cut -f 1 -d ' '`
@@ -76,14 +76,14 @@ do
 				echo "The entry $ENTRY accession $ACCESSION will be written to $OUTPUT."
 				echo
 
-				echo "$ACCESSION_RESULT" >> $OUTPUT 2>/dev/null
-				echo >> $OUTPUT 2>/dev/null
+				echo "$ACCESSION_RESULT" >> $OUTPUT
+				echo >> $OUTPUT
 			else
 				echo "fastq_dump unsuccessful for accession number $NUM_ACCESSIONS with entry $ENTRY." 
 				echo "The entry $ENTRY accession $ACCESSION could not be fetched."
 				echo
 
-				echo "$ACCESSION" >> $FAILED_ACCESSIONS 2>/dev/null
+				echo "$ACCESSION" >> $FAILED_ACCESSIONS
 			fi
 
 			# echo "Reenabling connections..."
