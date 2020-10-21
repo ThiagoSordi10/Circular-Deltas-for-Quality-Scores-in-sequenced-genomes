@@ -1,23 +1,26 @@
 #!/bin/bash
 
-if [ "$#" -ne "5" ]; then
+if [ "$#" -ne "6" ]; then
     echo "Error. Not enough arguments."
+	echo "EXAMPLE: ./methodology_script.sh [integer]<number of reads per genome> [boolean]<random accessions> [boolean]<integrity protection> [file]input.txt [file]output.txt [file]failed_accessions.txt"
     exit 1
 fi
 echo "Enough arguments supplied. Ready to go."
 echo
 
-# get the file with the accession list from the arguments
-INPUT=$1
 # number of fastq entries to fetch from each genome
-NUM_READS_PER_GENOME=$2
-# and the output file
-OUTPUT=$3
-# and a file specifically for failed accessions
-FAILED_ACCESSIONS=$4
+NUM_READS_PER_GENOME=$1
+# if the accession reads are >really< random
+RANDOM_ACCESSIONS=$2
 # integrity protection revises the output to check if some accessions contain wrong information
 # maybe unnecessary? just didnt want to throw this out.
-INTEGRITY_PROTECTION=$5
+INTEGRITY_PROTECTION=$3
+# get the file with the accession list from the arguments
+INPUT=$4
+# and the output file
+OUTPUT=$5
+# and a file specifically for failed accessions
+FAILED_ACCESSIONS=$6
 
 if test -f $OUTPUT; then
 	rm $OUTPUT
@@ -34,18 +37,26 @@ do
 	# get the number of FASTQ entries on that file
 	NUM_ENTRIES=`vdb-dump --id_range $ACCESSION | awk '{print $7}' | tr -d ","`
 	
+	# echo "Recreating ERROR 1, disabling all connections..."
+	# nmcli networking off
+	# sleep 5s
+
 	if [ -z  "$NUM_ENTRIES" ]; then
 		echo "vdb_dump unsuccessful on accession number $NUM_ACCESSIONS." 
 		echo "The accession $ACCESSION could not be fetched."
 		echo
 
-		$ACCESSION >> $FAILED_ACCESSIONS 2>/dev/null
+		echo "$ACCESSION" >> $FAILED_ACCESSIONS 2>/dev/null
 	else
 		# calculate a hash (int) based on the id to use as a seed of a random number generator
 		HASH=`cksum <<< $ACCESSION | cut -f 1 -d ' '`
 		# print the info about the genome (accession id, hash, and number of entries available)
 		echo "vdb_dump successful on accession number $NUM_ACCESSIONS." 
 		echo "The accession $ACCESSION (with hash/seed $HASH) contains $NUM_ENTRIES FASTQ entries."
+
+		if [ $RANDOM_ACCESSIONS = false ]; then
+			RANDOM=$HASH
+		fi
 
 		# fetch $NUM_READS_PER_GENOME entries from each genome
 		for (( i=0; i<$NUM_READS_PER_GENOME; i++ ))
@@ -60,18 +71,19 @@ do
 
 			# get the FASTQ entry number $ENTRY from the genome $ACCESSION and store it in the output file
 			ACCESSION_RESULT=`fastq-dump.2.10.8 -N $ENTRY -X $ENTRY --skip-technical -Z $ACCESSION`
-			if [[ $ACCESSION_RESULT = "Failed to call external services." ]]; then
-				echo "fastq_dump unsuccessful for accession number $NUM_ACCESSIONS with entry $ENTRY." 
-				echo "The entry $ENTRY accession $ACCESSION could not be fetched."
-				echo
-
-				$ACCESSION >> $FAILED_ACCESSIONS 2>/dev/null
-			else
+			if [[ "$ACCESSION_RESULT" == *"$ACCESSION"* ]]; then
 				echo "fastq_dump successful for accession number $NUM_ACCESSIONS with entry $ENTRY." 
 				echo "The entry $ENTRY accession $ACCESSION will be written to $OUTPUT."
 				echo
 
-				$ACCESSION_RESULT >> $OUTPUT 2>/dev/null
+				echo "$ACCESSION_RESULT" >> $OUTPUT 2>/dev/null
+				echo >> $OUTPUT 2>/dev/null
+			else
+				echo "fastq_dump unsuccessful for accession number $NUM_ACCESSIONS with entry $ENTRY." 
+				echo "The entry $ENTRY accession $ACCESSION could not be fetched."
+				echo
+
+				echo "$ACCESSION" >> $FAILED_ACCESSIONS 2>/dev/null
 			fi
 
 			# echo "Reenabling connections..."
@@ -79,6 +91,10 @@ do
 			# sleep 10s
 		done
 	fi
+
+	# echo "Reenabling connections..."
+	# nmcli networking on
+	# sleep 5s
 
 	((NUM_ACCESSIONS=NUM_ACCESSIONS+1))
 done
