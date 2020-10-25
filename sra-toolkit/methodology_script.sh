@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ "$#" -ne "6" ]; then
+if [ "$#" -ne "7" ]; then
     echo "Error. Not enough arguments."
 	echo "EXAMPLE: ./methodology_script.sh [integer]<number of reads per genome> [boolean]<random accessions> [boolean]<integrity protection> [file]input.txt [file]output.txt [file]failed_accessions_OUTPUT.txt"
     exit 1
@@ -20,13 +20,17 @@ INPUT=$4
 OUTPUT=$5
 # and a file specifically for failed accessions
 FAILED_ACCESSIONS_OUTPUT=$6
+# and a file specifically for failed entries
+FAILED_ENTRIES_OUTPUT=$7
 
+# this remove duplicate files, so that all the reads we do are not appended to old read files
 remove_duplicate_files () {
 	if test -f $1; then
 		rm $1
 	fi
 }
 
+# this will fetch the number of entries of an accession
 fetch_accession() {
 	NUM_ACCESSIONS=1
 	# for each accession id in the list
@@ -44,11 +48,12 @@ fetch_accession() {
 		fi
 
 		# enable_connections
-		
+
 		((NUM_ACCESSIONS=NUM_ACCESSIONS+1))
 	done
 }
 
+# if fetch_accession fails, it will write this accession to the failed_accessions output
 fetch_accession_failed() {
 	echo "vdb_dump unsuccessful on accession number $NUM_ACCESSIONS." 
 	echo "The accession $ACCESSION could not be fetched."
@@ -57,6 +62,7 @@ fetch_accession_failed() {
 	echo "$ACCESSION" >> $FAILED_ACCESSIONS_OUTPUT
 }
 
+# this function will run fetch_entry for every entry requested for each accession
 fetch_entries_from_accession() {
 	# calculate a hash (int) based on the id to use as a seed of a random number generator
 	HASH=`cksum <<< $ACCESSION | cut -f 1 -d ' '`
@@ -75,6 +81,7 @@ fetch_entries_from_accession() {
 	done
 }
 
+# this fetches an entry from an accession
 fetch_entry() {
 	# calculate a random entry number (smaller than the total number of entries available in the genome)
 	ENTRY=$(($RANDOM%$NUM_ENTRIES))
@@ -93,23 +100,27 @@ fetch_entry() {
 	# enable_connections
 }
 
+# if an entry is successfully fetched, it is written to the output
 entry_fetched_successfully() {
 	echo "fastq_dump successful for accession number $NUM_ACCESSIONS with entry $ENTRY." 
-	echo "The entry $ENTRY accession $ACCESSION will be written to $OUTPUT."
+	echo "The entry $ENTRY for accession $ACCESSION will be written to $OUTPUT."
 	echo
 
 	echo "$ACCESSION_RESULT" >> $OUTPUT
 	echo >> $OUTPUT
 }
 
+# if an entry fails to be fetched, it is written to the failed entries output
 entry_failed_to_be_fetched() {
 	echo "fastq_dump unsuccessful for accession number $NUM_ACCESSIONS with entry $ENTRY." 
-	echo "The entry $ENTRY accession $ACCESSION could not be fetched."
+	echo "The entry $ENTRY for accession $ACCESSION could not be fetched."
 	echo
 
-	echo "$ACCESSION" >> $FAILED_ACCESSIONS_OUTPUT
+	echo "$ACCESSION/$ENTRY" >> $FAILED_ENTRIES_OUTPUT
 }
 
+# "integrity_protection" is a function that checks if the genome sequence came with right information
+# regarding to length and the actual length of the dna and qs string.
 integrity_protection () {
 	if [ $INTEGRITY_PROTECTION = true ]; then
 		echo "Integrity protection is on. It will delete all inconsistent reads."
@@ -134,18 +145,21 @@ integrity_protection () {
 	fi
 }
 
+# TEST TOOL: disables connections before a request
 disable_connections () {
 	echo "Recreating ERROR $1, disabling all connections..."
 	nmcli networking off
 	sleep 10s
 }
 
+# TEST TOOL: reenables connections
 enable_connections() {
 	echo "Reenabling connections..."
 	nmcli networking on
 	sleep 10s
 }
 
+# OUR CODE STARTS HERE
 remove_duplicate_files $OUTPUT
 remove_duplicate_files $FAILED_ACCESSIONS_OUTPUT
 
