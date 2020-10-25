@@ -3,21 +3,14 @@ import matplotlib.pyplot as plot
 import matplotlib.image as mpimg
 import os
 import pickle
-import numpy as np
 
 #The dictionary with all the QS values [33, 74]
 dictionary = {}
 
 #Function to plot the graphic for each dictionary
-def ploted(sorted_dictionary, i, path):
-	pos_0 = list(zip(*sorted_dictionary))[0]
-	pos_1 = list(zip(*sorted_dictionary))[1]
-	x_pos = np.arange(len(pos_0))
-
-	plot.bar(x_pos,pos_1,align='center')
-	plot.xticks(x_pos,pos_0)
-	#plot.bar(range(len(d)), list(d.values()), align='center')
-	#plot.xticks(range(len(d)), list(d.keys()))
+def ploted(d, i, path):
+	plot.bar(range(len(d)), list(d.values()), align='center')
+	plot.xticks(range(len(d)), list(d.keys()))
 	#save the plot as .png images
 	plot.savefig(path+'/'+'Line('+str(i)+').png')
 	#both methods used to clear the current axes and plots
@@ -90,10 +83,8 @@ def main():
 	#Print and plot
 	for i in range(0,len(line),1):
 		print("posicao: ", i)
-		#sort each dictionary, transforming it into a list of tuples
-		sorted_dict = sorted(lst[i].items())
-		ploted(sorted_dict, i, path)
-		print(sorted_dict, "\n")
+		ploted(lst[i], i, path)
+		print(lst[i], "\n")
 
 	#Save the List of dictionaries with pickle serialization
 	serialize_list(lst)

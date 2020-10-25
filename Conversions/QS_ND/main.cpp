@@ -17,6 +17,8 @@ calculated by the result of the subtraction of the actual char and last char
 EX: 
  QS:F  C  B  A  A  G  L 
  ND:F -3 -1 -1  0  6  5
+
+After that, we convert the ND to ND+75
 **/
 
 int main(int argc, char *argv[]){
@@ -38,14 +40,12 @@ int main(int argc, char *argv[]){
 				std::vector<char> vetor_qs(line.begin(), line.end());
 				//we write the first value of the 
 				normal << vetor_qs[0];
-				normal << ' ';
 
 				for(auto i = 1; i <vetor_qs.size(); i++){
 					//Get the difference betwen the actual QS value and the last one
-					int aux = ((int)vetor_qs[i] - (int)vetor_qs[i-1]);
+					int aux = ((int)vetor_qs[i] - (int)vetor_qs[i-1])+75;
 					//Write to the new file 
-					normal << aux;
-					normal << ' ';
+					normal << char(aux);
 				}
 				//write the break line and reset the counter line
 				normal << "\n";

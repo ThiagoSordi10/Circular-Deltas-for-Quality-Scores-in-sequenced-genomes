@@ -33,18 +33,16 @@ int main(int argc, char *argv[]){
 			//If it is the fourth line that should be the fastq data, then...
 			if(line_count == 4){
 				//We create a vector that receives a line of the fastq file
-				std::vector<int> vetor_qs(line.begin(), line.end());
+				std::vector<char> vetor_qs(line.begin(), line.end());
 				//we write the first byte
-				circular << (char)vetor_qs[0];
-				circular << ' ';
+				circular << vetor_qs[0];
 
 				for(auto i = 1; i <vetor_qs.size(); i++){
 					//Get the difference betwen the actual QS value and the last one
-					int NDvalue = (vetor_qs[i] - vetor_qs[i-1]);
+					int NDvalue = ((int)vetor_qs[i] - (int)vetor_qs[i-1]);
 					//Aux is the ND value, now we transform it to CD value
-					int aux = circular_distance(NDvalue, interval);
-					circular << aux;
-					circular << ' ';
+					int aux = circular_distance(NDvalue, interval)+75;
+					circular << char(aux);
 				}
 				//write the break line and reset the counter line
 				circular << "\n";

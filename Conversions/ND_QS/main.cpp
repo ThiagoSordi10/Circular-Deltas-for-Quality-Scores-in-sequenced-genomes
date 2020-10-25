@@ -55,7 +55,8 @@ int main(int argc, char *argv[]){
 			if(line_count == 4){
 				//Creates a vector that each part is a string with the number. EX: v[i] == # 
 				string linha = line;
-				vector<string> v{explode(linha, ' ')};
+				vector<char> v(line.begin(), line.end());
+				//vector<string> v{explode(linha, ' ')};
 				//we write the first char value in the file
 				fastq << linha[0];
 				//transform the first ascii char to it's respective ascii value. EX: '#' == 35
@@ -65,16 +66,16 @@ int main(int argc, char *argv[]){
 				for(auto i = 1; i <v.size(); i++){
 					if(i == 1){
 						//The first iteration will read the first value of the line 61
-						valor_anterior = inicial;
+						valor_anterior = (int)inicial;
 					}else{
 						//Before the first iteration, valor_anterior will receive the value
 						//that is calculated on line 76
 						valor_anterior = variavel_salva;
 					}
 					//transform the char readed in the text file to a int value.
-					int valor = atoi(v[i].c_str());
+					int valor = int(v[i]);
 					//Gets the sum of the value read and the last value
-					int variavel = valor_anterior + valor;
+					int variavel = (valor_anterior + valor)-75;
 					//Save the new value into a variable that will be used on line 71
 					variavel_salva = variavel;
 					//transform the int ascii value to it's respective char ascii value

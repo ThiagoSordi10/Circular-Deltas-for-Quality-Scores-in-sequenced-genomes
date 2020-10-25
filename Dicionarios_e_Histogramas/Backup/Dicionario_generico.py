@@ -1,16 +1,8 @@
 import fileinput
 import matplotlib.pyplot as plot
-import pickle
-import numpy as np
 
 #The dictionary with all the QS values [33, 74]
 dictionary = {}
-
-#Funtion to serialize the list of dictionaries
-def serialize_dict(dictionary):
-	pickle_out = open("serialized_dict.pickle", "wb")
-	pickle.dump(dictionary, pickle_out)
-	pickle_out.close()
 
 def main():
 	#start the line counter
@@ -32,24 +24,11 @@ def main():
 						dictionary.update({key:1})
 
 			line_count = 0
-
-
-	sorted_dictionary = sorted(dictionary.items())
-	print(sorted_dictionary)
-	#print(dictionary)
-	serialize_dict(dictionary)
+		
+	print(dictionary)
 	#plot the graphic
-	#plot.bar(range(len(dictionary)), list(dictionary.values()), align='center')
-	#plot.xticks(range(len(dictionary)), list(dictionary.keys()))
-	#plot.show()
-
-	pos_0 = list(zip(*sorted_dictionary))[0]
-	pos_1 = list(zip(*sorted_dictionary))[1]
-	x_pos = np.arange(len(pos_0))
-
-	plot.bar(x_pos,pos_1,align='center')
-	plot.xticks(x_pos,pos_0)
+	plot.bar(range(len(dictionary)), list(dictionary.values()), align='center')
+	plot.xticks(range(len(dictionary)), list(dictionary.keys()))
 	plot.show()
-
 
 main()
