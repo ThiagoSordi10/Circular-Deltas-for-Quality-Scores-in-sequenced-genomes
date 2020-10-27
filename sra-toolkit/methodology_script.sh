@@ -87,7 +87,7 @@ fetch_entry() {
 	ENTRY=$(($RANDOM%$NUM_ENTRIES))
 	echo "The entry $ENTRY will be requested for accession $ACCESSION."
 
-	disable_connections "2"
+	# disable_connections "2"
 
 	# get the FASTQ entry number $ENTRY from the genome $ACCESSION and store it in the output file
 	ACCESSION_RESULT=`fastq-dump.2.10.8 -N $ENTRY -X $ENTRY --skip-technical -Z $ACCESSION`
@@ -97,7 +97,7 @@ fetch_entry() {
 		entry_failed_to_be_fetched
 	fi
 
-	enable_connections
+	# enable_connections
 }
 
 # if an entry is successfully fetched, it is written to the output
