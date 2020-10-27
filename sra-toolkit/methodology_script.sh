@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ "$#" -ne "7" ]; then
     echo "Error. Not enough arguments."
-	echo "EXAMPLE: ./methodology_script.sh [integer]<number of reads per genome> [boolean]<random accessions> [boolean]<integrity protection> [file]input.txt [file]output.txt [file]failed_accessions_OUTPUT.txt"
+	echo "EXAMPLE: ./methodology_script.sh [integer]<number of reads per genome> [boolean]<hash accessions> [boolean]<integrity protection> [file]input.txt [file]output.txt [file]failed_accessions_output.txt [file]failed_entries_output.txt"
     exit 1
 fi
 echo "Enough arguments supplied. Ready to go."
@@ -10,7 +10,7 @@ echo
 # number of fastq entries to fetch from each genome
 NUM_READS_PER_GENOME=$1
 # if the random accessions are hashed
-HASHED_ACCESSIONS=$2
+HASH_ACCESSIONS=$2
 # integrity protection revises the output to check if some accessions contain wrong information
 # maybe unnecessary? just didnt want to throw this out.
 INTEGRITY_PROTECTION=$3
@@ -87,7 +87,7 @@ fetch_entry() {
 	ENTRY=$(($RANDOM%$NUM_ENTRIES))
 	echo "The entry $ENTRY will be requested for accession $ACCESSION."
 
-	# disable_connections "2"
+	disable_connections "2"
 
 	# get the FASTQ entry number $ENTRY from the genome $ACCESSION and store it in the output file
 	ACCESSION_RESULT=`fastq-dump.2.10.8 -N $ENTRY -X $ENTRY --skip-technical -Z $ACCESSION`
@@ -97,7 +97,7 @@ fetch_entry() {
 		entry_failed_to_be_fetched
 	fi
 
-	# enable_connections
+	enable_connections
 }
 
 # if an entry is successfully fetched, it is written to the output
@@ -107,7 +107,6 @@ entry_fetched_successfully() {
 	echo
 
 	echo "$ACCESSION_RESULT" >> $OUTPUT
-	echo >> $OUTPUT
 }
 
 # if an entry fails to be fetched, it is written to the failed entries output
@@ -116,7 +115,7 @@ entry_failed_to_be_fetched() {
 	echo "The entry $ENTRY for accession $ACCESSION could not be fetched."
 	echo
 
-	echo "$ACCESSION/$ENTRY" >> $FAILED_ENTRIES_OUTPUT
+	echo "$ACCESSION:$ENTRY" >> $FAILED_ENTRIES_OUTPUT
 }
 
 # "integrity_protection" is a function that checks if the genome sequence came with right information
