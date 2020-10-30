@@ -36,11 +36,11 @@ fetch_accession() {
 	# for each accession id in the list
 	for ACCESSION in `cat $INPUT`
 	do
+		# disable_connections "1"
+
 		# get the number of FASTQ entries on that file
 		NUM_ENTRIES=`vdb-dump --id_range $ACCESSION | awk '{print $7}' | tr -d ","`
 		
-		# disable_connections "1"
-
 		if [ -z  "$NUM_ENTRIES" ]; then
 			fetch_accession_failed
 		else
@@ -115,7 +115,7 @@ entry_failed_to_be_fetched() {
 	echo "The entry $ENTRY for accession $ACCESSION could not be fetched."
 	echo
 
-	echo "$ACCESSION:$ENTRY" >> $FAILED_ENTRIES_OUTPUT
+	echo "$ACCESSION.$ENTRY" >> $FAILED_ENTRIES_OUTPUT
 }
 
 # "integrity_protection" is a function that checks if the genome sequence came with right information
@@ -161,6 +161,7 @@ enable_connections() {
 # OUR CODE STARTS HERE
 remove_duplicate_files $OUTPUT
 remove_duplicate_files $FAILED_ACCESSIONS_OUTPUT
+remove_duplicate_files $FAILED_ENTRIES_OUTPUT
 
 fetch_accession
 
