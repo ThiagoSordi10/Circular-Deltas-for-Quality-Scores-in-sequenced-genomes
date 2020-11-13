@@ -4,9 +4,18 @@ import matplotlib.image as mpimg
 import os
 import pickle
 import numpy as np
+from math import log2
 
 #The dictionary with all the QS values [33, 74]
 dictionary = {}
+
+#Funtion to calculate the entropy
+def calculate_entropy(lista, somatorio):
+	ent_total = 0
+	for i in range (0,len(lista),1):
+		ent_total = ent_total + ((lista[i]/somatorio) * log2(lista[i]/somatorio))
+
+	return -ent_total
 
 #Function to plot the graphic for each dictionary
 def ploted(sorted_dictionary, i, path):
@@ -87,13 +96,15 @@ def main():
 	#Create a new directory to save the plots
 	path = create_directory(file_name)
 
+	entropy_list = []
 	#Print and plot
 	for i in range(0,len(line),1):
-		print("posicao: ", i)
-		#sort each dictionary, transforming it into a list of tuples
 		sorted_dict = sorted(lst[i].items())
+		#calculate the entropy of each position dictionary
+		entropy_list = list(lst[i].values())
+		print("pos:", i, ", entropy: ", calculate_entropy(entropy_list, sum(entropy_list)))
 		ploted(sorted_dict, i, path)
-		print(sorted_dict, "\n")
+		#print(sorted_dict, "\n")
 
 	#Save the List of dictionaries with pickle serialization
 	serialize_list(lst)
