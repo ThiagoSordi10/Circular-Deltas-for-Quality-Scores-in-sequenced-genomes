@@ -56,7 +56,7 @@ def main():
 	entropy_list = []
 	entropy_list = list(dictionary.values())
 	#call the function that calculates the entropy
-	print("Entropy:", calculate_entropy(test_list, sum(test_list)))
+	print("Entropy:", calculate_entropy(entropy_list, sum(entropy_list)))
 
 	#serialize the dictionary
 	serialize_dict(dictionary)
