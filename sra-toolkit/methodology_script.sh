@@ -8,7 +8,7 @@ echo "Enough arguments supplied. Ready to go."
 echo
 
 # number of fastq entries to fetch from each genome
-NUM_READS_PER_GENOME=$1
+NUM_READS_PER_QUERY=$1
 # if the random accessions are hashed
 HASH_ACCESSIONS=$2
 # integrity protection revises the output to check if some accessions contain wrong information
@@ -74,8 +74,8 @@ fetch_entries_from_accession() {
 		RANDOM=$HASH
 	fi
 
-	# fetch $NUM_READS_PER_GENOME entries from each genome
-	for (( i=0; i<$NUM_READS_PER_GENOME; i++ ))
+	# fetch $NUM_READS_PER_QUERY entries from each genome
+	for (( i=0; i<$NUM_READS_PER_QUERY; i++ ))
 	do
 		fetch_entry
 	done
