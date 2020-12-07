@@ -70,10 +70,6 @@ fetch_entries_from_accession() {
 	echo "vdb_dump successful on accession number $NUM_ACCESSIONS." 
 	echo "The accession $ACCESSION (with hash/seed $HASH) contains $NUM_ENTRIES FASTQ entries."
 
-	if [ $HASH_ACCESSIONS = true ]; then
-		RANDOM=$HASH
-	fi
-
 	# fetch $NUM_READS_PER_GENOME entries from each genome
 	for (( i=0; i<$NUM_READS_PER_GENOME; i++ ))
 	do
@@ -84,7 +80,7 @@ fetch_entries_from_accession() {
 # this fetches an entry from an accession
 fetch_entry() {
 	# calculate a random entry number (smaller than the total number of entries available in the genome)
-	ENTRY=$(($RANDOM%$NUM_ENTRIES))
+	ENTRY=`gcc -o random random.c && ./random $NUM_ENTRIES $HASH`
 	echo "The entry $ENTRY will be requested for accession $ACCESSION."
 
 	# disable_connections "2"
