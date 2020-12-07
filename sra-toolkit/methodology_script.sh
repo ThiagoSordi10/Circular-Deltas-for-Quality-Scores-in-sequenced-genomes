@@ -133,5 +133,3 @@ remove_duplicate_files $FAILED_ACCESSIONS_OUTPUT
 remove_duplicate_files $FAILED_ENTRIES_OUTPUT
 
 fetch_accession
-
-integrity_protection
