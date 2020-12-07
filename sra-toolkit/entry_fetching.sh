@@ -26,8 +26,8 @@ fetch_entries() {
     for LINE in `cat $INPUT`
     do
 
-        ACCESSION=`echo $LINE | tr ":" " " | awk '{print $1}'`
-        ENTRY=`echo $LINE | tr ":" " " | awk '{print $2}'`
+        ACCESSION=`echo $LINE | awk '{print $1}'`
+        ENTRY=`echo $LINE | awk '{print $2}'`
         # disable_connections "2"
 
         # get the FASTQ entry number $ENTRY from the genome $ACCESSION and store it in the output file
