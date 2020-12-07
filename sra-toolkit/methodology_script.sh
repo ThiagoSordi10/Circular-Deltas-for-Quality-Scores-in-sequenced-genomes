@@ -8,7 +8,7 @@ echo "Enough arguments supplied. Ready to go."
 echo
 
 # number of fastq entries to fetch from each genome
-NUM_READS_PER_GENOME=$1
+NUM_READS_PER_QUERY=$1
 # if the random accessions are hashed
 HASH_ACCESSIONS=$2
 # integrity protection revises the output to check if some accessions contain wrong information
@@ -70,8 +70,17 @@ fetch_entries_from_accession() {
 	echo "vdb_dump successful on accession number $NUM_ACCESSIONS." 
 	echo "The accession $ACCESSION (with hash/seed $HASH) contains $NUM_ENTRIES FASTQ entries."
 
+<<<<<<< HEAD
 	# fetch $NUM_READS_PER_GENOME entries from each genome
 	for (( i=0; i<$NUM_READS_PER_GENOME; i++ ))
+=======
+	if [ $HASH_ACCESSIONS = true ]; then
+		RANDOM=$HASH
+	fi
+
+	# fetch $NUM_READS_PER_QUERY entries from each genome
+	for (( i=0; i<$NUM_READS_PER_QUERY; i++ ))
+>>>>>>> e53e631c2f381d03b0c42c0827fd69b77c13a275
 	do
 		fetch_entry
 	done
