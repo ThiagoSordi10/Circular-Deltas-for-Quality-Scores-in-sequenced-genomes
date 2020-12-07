@@ -1,7 +1,7 @@
 #!/bin/bash
-if [ "$#" -ne "7" ]; then
+if [ "$#" -ne "5" ]; then
     echo "Error. Not enough arguments."
-	echo "EXAMPLE: ./methodology_script.sh [integer]<number of reads per genome> [boolean]<hash accessions> [boolean]<integrity protection> [file]input.txt [file]output.txt [file]failed_accessions_output.txt [file]failed_entries_output.txt"
+	echo "EXAMPLE: ./methodology_script.sh [integer]<number of reads per genome> [file]input.txt [file]output.txt [file]failed_accessions_output.txt [file]failed_entries_output.txt"
     exit 1
 fi
 echo "Enough arguments supplied. Ready to go."
@@ -9,19 +9,14 @@ echo
 
 # number of fastq entries to fetch from each genome
 NUM_READS_PER_QUERY=$1
-# if the random accessions are hashed
-HASH_ACCESSIONS=$2
-# integrity protection revises the output to check if some accessions contain wrong information
-# maybe unnecessary? just didnt want to throw this out.
-INTEGRITY_PROTECTION=$3
-# get the file with the accession list from the arguments
-INPUT=$4
+# input file
+INPUT=$2
 # and the output file
-OUTPUT=$5
+OUTPUT=$3
 # and a file specifically for failed accessions
-FAILED_ACCESSIONS_OUTPUT=$6
+FAILED_ACCESSIONS_OUTPUT=$4
 # and a file specifically for failed entries
-FAILED_ENTRIES_OUTPUT=$7
+FAILED_ENTRIES_OUTPUT=$5
 
 # this remove duplicate files, so that all the reads we do are not appended to old read files
 remove_duplicate_files () {
@@ -70,17 +65,12 @@ fetch_entries_from_accession() {
 	echo "vdb_dump successful on accession number $NUM_ACCESSIONS." 
 	echo "The accession $ACCESSION (with hash/seed $HASH) contains $NUM_ENTRIES FASTQ entries."
 
-<<<<<<< HEAD
-	# fetch $NUM_READS_PER_GENOME entries from each genome
-	for (( i=0; i<$NUM_READS_PER_GENOME; i++ ))
-=======
 	if [ $HASH_ACCESSIONS = true ]; then
 		RANDOM=$HASH
 	fi
 
 	# fetch $NUM_READS_PER_QUERY entries from each genome
 	for (( i=0; i<$NUM_READS_PER_QUERY; i++ ))
->>>>>>> e53e631c2f381d03b0c42c0827fd69b77c13a275
 	do
 		fetch_entry
 	done
@@ -121,32 +111,6 @@ entry_failed_to_be_fetched() {
 	echo
 
 	echo "$ACCESSION.$ENTRY" >> $FAILED_ENTRIES_OUTPUT
-}
-
-# "integrity_protection" is a function that checks if the genome sequence came with right information
-# regarding to length and the actual length of the dna and qs string.
-integrity_protection () {
-	if [ $INTEGRITY_PROTECTION = true ]; then
-		echo "Integrity protection is on. It will delete all inconsistent reads."
-		echo
-		# reads the output file, accession by accession
-		while read comment1; read dna; read comment2; read qs
-		do
-			# if the length displayed in the comments is not the same in the dna or the quality score, the line is deleted
-			if [ `echo -n $dna | wc -c` -ne `echo "$comment1" | awk '{print $3}' | tr -d "length="` ] || 
-			[ `echo -n $qs | wc -c` -ne `echo "$comment2" | awk '{print $3}' | tr -d "length="` ]; then
-
-				# gets the accession id, the hardcoded way.
-				echo "$comment1" | awk '{print $1}' | tr -d "@" | cut -f1 -d "." >> $FAILED_ACCESSIONS_OUTPUT 2>/dev/null
-
-				# deletes all the lines from this accession
-				sed -i "/$comment1/d" $OUTPUT
-				sed -i "/$dna/d" $OUTPUT
-				sed -i "/$comment2/d" $OUTPUT
-				sed -i "/$qs/d" $OUTPUT
-			fi
-		done < "$OUTPUT"
-	fi
 }
 
 # TEST TOOL: disables connections before a request
