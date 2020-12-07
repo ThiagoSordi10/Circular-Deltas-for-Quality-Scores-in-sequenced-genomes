@@ -26,9 +26,12 @@ fetch_entries() {
     for LINE in `cat $INPUT`
     do
 
-        ACCESSION=`echo $LINE | awk '{print $1}'`
-        ENTRY=`echo $LINE | awk '{print $2}'`
+        ACCESSION=`echo $LINE | tr "," " " | awk '{print $1}'`
+        ENTRY=`echo $LINE | tr "," " " | awk '{print $2}'`
         # disable_connections "2"
+
+        echo $ACCESSION
+        echo $ENTRY
 
         # get the FASTQ entry number $ENTRY from the genome $ACCESSION and store it in the output file
         ACCESSION_RESULT=`fastq-dump.2.10.8 -N $ENTRY -X $ENTRY --skip-technical -Z $ACCESSION`
@@ -57,7 +60,7 @@ entry_failed_to_be_fetched() {
 	echo "The entry $ENTRY for accession $ACCESSION could not be fetched."
 	echo
 
-	echo "$ACCESSION.$ENTRY" >> $FAILED_ENTRIES_OUTPUT
+	echo "$ACCESSION,$ENTRY" >> $FAILED_ENTRIES_OUTPUT
 }
 
 remove_duplicate_files $OUTPUT

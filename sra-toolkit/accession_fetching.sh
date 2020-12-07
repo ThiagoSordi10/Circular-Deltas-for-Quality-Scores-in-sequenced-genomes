@@ -32,7 +32,7 @@ fetch_accession() {
 	for LINE in `cat $INPUT`
 	do
 		# disable_connections "1"
-		if [ ! $PREFETCHED ] 
+		if [ $PREFETCHED = false ] 
 		then
 			# get the number of FASTQ entries on that file
 			ACCESSION=`echo $LINE`
@@ -59,7 +59,7 @@ generate_entries_for_accession() {
 	# calculate a hash (int) based on the id to use as a seed of a random number generator
 	HASH=`cksum <<< $ACCESSION | cut -f 1 -d ' '`
 	
-	if [ ! $PREFETCHED ]
+	if [ $PREFETCHED = false ]
 	then
 		# print the info about the genome (accession id, hash, and number of entries available)
 		echo "vdb_dump successful on accession number $NUM_ACCESSIONS."
