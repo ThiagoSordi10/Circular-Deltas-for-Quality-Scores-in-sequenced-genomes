@@ -34,7 +34,7 @@ fetch_entries() {
         echo $ENTRY
 
         # get the FASTQ entry number $ENTRY from the genome $ACCESSION and store it in the output file
-        ACCESSION_RESULT=`fastq-dump.2.10.8 -N $ENTRY -X $ENTRY --skip-technical -Z $ACCESSION`
+        ACCESSION_RESULT=`fastq-dump -N $ENTRY -X $ENTRY --skip-technical -Z $ACCESSION`
         if [[ "$ACCESSION_RESULT" == *"$ACCESSION"* ]]; then
             entry_fetched_successfully
         else
