@@ -35,21 +35,22 @@ fetch_accession() {
 		if [ $PREFETCHED = false ] 
 		then
 			# get the number of FASTQ entries on that file
-			ACCESSION=`echo $LINE`
+			ACCESSION=`echo $LINE | tr "," " " | awk '{print $1}'`
+
+			echo "Attempting vdb_dump on accession $ACCESSION."	
 			NUM_ENTRIES=`vdb-dump --id_range $ACCESSION | awk '{print $7}' | tr -d ","`
 		else
 			ACCESSION=`echo $LINE | tr "," " " | awk '{print $1}'`
         	NUM_ENTRIES=`echo $LINE | tr "," " " | awk '{print $2}'`
 		fi
-		
+
 		if [ -z  "$NUM_ENTRIES" ]; then
 			fetch_accession_failed
 		else
 			generate_entries_for_accession
 		fi
 
-		# enable_connections
-
+		# enable_connections	
 		((NUM_ACCESSIONS=NUM_ACCESSIONS+1))
 	done
 }
