@@ -67,7 +67,7 @@ generate_entries_for_accession() {
 	fi
 
 	# calculate a random entry number (smaller than the total number of entries available in the genome)
-    ENTRIES=`./random $ACCESSION $NUM_ENTRIES $HASH $NUM_READS_PER_QUERY`
+    ENTRIES=`python3 random.py $ACCESSION $NUM_ENTRIES $HASH $NUM_READS_PER_QUERY`
     echo "$ENTRIES" >> $OUTPUT
 }
 
@@ -83,7 +83,5 @@ fetch_accession_failed() {
 # OUR CODE STARTS HERE
 remove_duplicate_files $OUTPUT
 remove_duplicate_files $FAILED_ACCESSIONS_OUTPUT
-
-`gcc -o random random.c`
 
 fetch_accession
