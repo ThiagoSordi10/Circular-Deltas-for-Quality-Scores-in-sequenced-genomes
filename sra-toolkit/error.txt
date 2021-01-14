@@ -1,9 +1,0 @@
-2020-12-04T19:01:46 fastq-dump.2.10.8 err: timeout exhausted while waiting condition within process system module - failed SRR957295
-
-=============================================================
-An error occurred during processing.
-A report was generated into the file '/home/agasta/ncbi_error_report.txt'.
-If the problem persists, you may consider sending the file
-to 'sra-tools@ncbi.nlm.nih.gov' for assistance.
-=============================================================
-
