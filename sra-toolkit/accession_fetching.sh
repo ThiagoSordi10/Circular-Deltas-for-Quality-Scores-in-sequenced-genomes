@@ -67,7 +67,7 @@ generate_entries_for_accession() {
 	fi
 
 	# calculate a random entry number (smaller than the total number of entries available in the genome)
-    ENTRIES=`python3 random.py $ACCESSION $NUM_ENTRIES $HASH $NUM_READS_PER_QUERY`
+    ENTRIES=`python3 rng.py $ACCESSION $NUM_ENTRIES $HASH $NUM_READS_PER_QUERY`
     echo "$ENTRIES" >> $OUTPUT
 }
 
