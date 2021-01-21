@@ -66,6 +66,11 @@ def main():
 				else:
 					print("\nDeu erro:"+line[i]+"\n"+line)
 					erro = True
+		 			line_count = 0
+		 			linha1 = "x"
+		 			linha2 = "x"
+		 			linha3 = "x"
+		 			linha4 = "x"
 
 			#Se os valores estão contidos dentro do intervalo pertimitido:
 			if erro == False:
