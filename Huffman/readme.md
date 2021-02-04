@@ -1,3 +1,3 @@
 python3 huffman_coding.py
 
-O programa gera o arquivo após os supostos Huffman e também a serialização via Pickle
+O programa gera o arquivo após os valores do dicionário serem convertidos para Huffman
