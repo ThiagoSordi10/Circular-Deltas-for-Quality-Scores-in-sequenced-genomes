@@ -33,7 +33,7 @@ def main():
 	
 	#Create the huffman tree with the dictionary items and also the dict with huffman values
         huff_dict = huffman.codebook(dictionary.items())
-	        print(huffman.codebook(dictionary.items()))
+	print(huffman.codebook(dictionary.items()))
 
 	#get the Byte array with huffman dictionary
         bitArrayStr=''
