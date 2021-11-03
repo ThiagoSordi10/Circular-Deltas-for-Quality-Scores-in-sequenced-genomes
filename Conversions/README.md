@@ -6,4 +6,4 @@
 - [ ] Problemas para converter CD para ND.
 Ponto a ser levantado. Como saber qual valor é o correto? -2 ou 22?
 
-Executar: ./main <option> <arquivo origem> <arquivo destino>
+Executar: ./main <_option> <arquivo_origem> <arquivo_destino>
