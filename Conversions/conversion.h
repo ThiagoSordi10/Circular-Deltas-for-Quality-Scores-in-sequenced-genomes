@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+const int interval = 41;
+
 const std::vector<char> explode(const std::string& s, const char& c);
 
 int circular_distance(int theNormalDelta, int theLen);

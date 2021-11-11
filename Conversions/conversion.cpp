@@ -72,7 +72,7 @@ int qs_cd(std::string fastq_file, std::string cd_file){
 	if(file.is_open()){
 		std::string line;
 		//this is the CD interval [-20,20] == 41 values
-		int interval = 41;
+		// int interval = 41;
 		int line_count = 0;
 		//read line by line the file
 		while(getline(file, line)){
@@ -202,10 +202,10 @@ int cd_qs(std::string cd_file, std::string fastq_file){
 					//transform the char readed in the text file to a int value.
 					int valor = v[i]-75;
           
-          if(valor_anterior - 33 + valor > 41){
-            valor -= 41;
+          if(valor_anterior - 33 + valor > interval){
+            valor -= interval;
           }else if(valor_anterior - 33 + valor < 0){
-            valor += 41;
+            valor += interval;
           }
 
 					//Gets the sum of the value read and the last value
