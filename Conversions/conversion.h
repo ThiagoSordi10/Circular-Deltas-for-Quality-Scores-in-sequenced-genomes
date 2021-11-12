@@ -11,6 +11,8 @@ const std::vector<char> explode(const std::string& s, const char& c);
 
 int circular_distance(int theNormalDelta, int theLen);
 
+int save_bin_file(int n, std::ofstream& file);
+
 int qs_nd(std::string fastq_file, std::string nd_file);
 
 int qs_cd(std::string fastq_file, std::string cd_file);

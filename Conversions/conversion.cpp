@@ -21,7 +21,19 @@ int circular_distance(int theNormalDelta, int theLen){
 	return value - theLen;
 }
 
+int save_bin_file(int n, std::ofstream& file){
+  
+  signed char byte;
+
+  byte = (n >> 0) & 0xFF;
+
+  file << byte;
+  return 0;
+}
+
+
 int qs_nd(std::string fastq_file, std::string nd_file){
+  std::ofstream file_bin("file.bin");
 	//This is the file with fastq data
 	std::ifstream file(fastq_file);
 	//This is the file that should contains the normal delta values
@@ -43,6 +55,7 @@ int qs_nd(std::string fastq_file, std::string nd_file){
 
 				for(auto i = 1; i <vetor_qs.size(); i++){
 					//Get the difference betwen the actual QS value and the last one
+          save_bin_file((int)vetor_qs[i] - (int)vetor_qs[i-1], file_bin);
 					int aux = ((int)vetor_qs[i] - (int)vetor_qs[i-1])+75;
 					//Write to the new file 
 					normal << char(aux);
@@ -58,12 +71,14 @@ int qs_nd(std::string fastq_file, std::string nd_file){
 			}
 		}	
 	}
+  file_bin.close();
 	file.close();
 	normal.close();
 	return 0;
 }
 
 int qs_cd(std::string fastq_file, std::string cd_file){
+  std::ofstream file_bin("file.bin");
 	//This is the fastq data file
 	std::ifstream file(fastq_file);
 	//This is the new circular delta file
@@ -88,6 +103,7 @@ int qs_cd(std::string fastq_file, std::string cd_file){
 					//Get the difference betwen the actual QS value and the last one
 					int NDvalue = ((int)vetor_qs[i] - (int)vetor_qs[i-1]);
 					//Aux is the ND value, now we transform it to CD value
+          save_bin_file(circular_distance(NDvalue, interval), file_bin);
 					int aux = circular_distance(NDvalue, interval)+75;
 					circular << char(aux);
 				}
@@ -102,6 +118,7 @@ int qs_cd(std::string fastq_file, std::string cd_file){
 			}
 		}	
 	}
+  file_bin.close();
 	file.close();
 	circular.close();
 	return 0;
